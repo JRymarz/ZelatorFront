@@ -13,13 +13,15 @@ function LoginForm() {
         e.preventDefault();
 
         try {
-            const response = await axios.post("http://localhost:9002/auth/login", {
+            const response = await axios.post("http://localhost:9002/auth/login",  {
                 email,
                 password,
-            });
+            },
+                {withCredentials: true});
 
             if(response.status === 200) {
-                navigate('/');
+                // navigate('/');
+                console.log(response.status);
             }
         } catch (error) {
             setError("Invalid credentails");
@@ -77,7 +79,7 @@ function LoginForm() {
             </div>
             <button type="submit">Zaloguj</button>
         </form>
-        {error} && <p>{error}</p>
+        {error}
         </div>
     )
 
