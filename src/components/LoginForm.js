@@ -3,62 +3,49 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
 
 
-function LoginForm() {
+export default function LoginForm() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
     const navigate = useNavigate();
 
-    const handleSubmit = async (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
 
-        try {
-            const response = await axios.post("http://localhost:9002/auth/login",  {
-                email,
-                password,
-            },
-                {withCredentials: true});
+        setError('');
 
-            if(response.status === 200) {
-                // navigate('/');
-                console.log(response.status);
-            }
-        } catch (error) {
-            setError("Invalid credentails");
+        const loginData = {
+            email,
+            password
         }
 
-        // e.preventDefault();
-        //
-        // const formData = new URLSearchParams();
-        // formData.append('username', email);
-        // formData.append('password', password);
-        //
-        // try {
-        //     const response = await axios.post('http://localhost:9002/login', formData, {
-        //         headers: {
-        //             'Content-Type': 'application/x-www-form-urlencoded',
-        //         },
-        //         withCredentials: true,
-        //     });
-        //
-        //     // console.log('Odpowiedz z backendu: ', response.data);
-        //     if(response.status === 200){
-        //         navigate('/')
-        //     }
-        // } catch (error) {
-        //     console.error('Błąd logowania: ', error);
-        // }
-    };
+        try {
+            const response = axios.post('http://localhost:9002/login', loginData);
+
+            console.log(response)
+            console.log('przed ifem')
+            if(response.status === 200){
+                console.log('Wnetrze ifa')
+                navigate("/loginSuccess");
+            } else {
+                const errorData = await response.json();
+                setError(errorData.message || 'Logowanie się nie powiodło.');
+            }
+        } catch (error) {
+            setError('Niespodziewany błąd');
+        }
+    }
+
 
     return(
         <div>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleLogin}>
             <h2>Logowanie</h2>
             <div>
                 <label htmlFor="email">E-mail:</label>
                 <input
                     type="email"
-                    // id="email"
+                     id="email"
                     value={email}
                     placeholder="email"
                     onChange={(e) => setEmail(e.target.value)}
@@ -70,7 +57,7 @@ function LoginForm() {
                 <label htmlFor="password">Hasło:</label>
                 <input
                     type="password"
-                    // id="password"
+                     id="password"
                     value={password}
                     placeholder="hasło"
                     onChange={(e) => setPassword(e.target.value)}
@@ -84,5 +71,3 @@ function LoginForm() {
     )
 
 }
-
-export default LoginForm;
