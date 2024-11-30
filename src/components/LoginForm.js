@@ -20,19 +20,20 @@ export default function LoginForm() {
         }
 
         try {
-            const response = axios.post('http://localhost:9002/login', loginData);
+            const response = await axios.post('http://localhost:9002/login', loginData);
 
             console.log(response)
             console.log('przed ifem')
             if(response.status === 200){
                 console.log('Wnetrze ifa')
                 navigate("/loginSuccess");
-            } else {
-                const errorData = await response.json();
-                setError(errorData.message || 'Logowanie się nie powiodło.');
             }
         } catch (error) {
-            setError('Niespodziewany błąd');
+            if(error.response) {
+                setError(error.response.data || 'Logowanie nie powiodło się.');
+            } else {
+                setError('Niespodziewany błąd');
+            }
         }
     }
 
