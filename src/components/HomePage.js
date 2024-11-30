@@ -1,24 +1,53 @@
 import React, {useEffect, useState} from "react";
 import axios from 'axios';
-import axiosInstance from "../axiosConfig";
+import {useNavigate} from "react-router-dom";
 
 function HomePage() {
-    const [email, setEmail] = useState('');
+
+    const [user, setUser] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        axiosInstance.get('http://localhost:9002/', {withCredentials: false})
-            .then(response => {
-                setEmail(response.data);
-            })
-            .catch(error => {
-                console.error("Problem z pobraniem usera:", error);
-            });
+        const fetchCurrenttUser = async () => {
+            try {
+                const response = await axios.get("http://localhost:9002/", {withCredentials: true});
+                console.log('Zalogowany user:', response.data);
+                setUser(response.data);
+            } catch (error) {
+                console.error('Brak zalogowanego usera', error);
+                setUser(null);
+            }
+        };
+
+        fetchCurrenttUser();
     }, []);
+
+
+    const handleLogout = async () => {
+        try {
+            const response = await axios.post("http://localhost:9002/logout", {}, {withCredentials: true});
+            console.log(response.data);
+
+            setUser(null);
+            navigate('/login');
+        } catch (error) {
+            console.error("Blad przy wylogowywaniu", error);
+            navigate('/login');
+        }
+    };
+
 
     return (
         <div>
             <h1>Zelator</h1>
-            <p>{email}</p>
+            {user ? (
+                <>
+                    <p><strong>E-mail:</strong> {user.email}</p>
+                    <button onClick={handleLogout}>Wyloguj się</button>
+                </>
+            ) : (
+                <p>Brak danych.</p>
+            )}
         </div>
     );
 

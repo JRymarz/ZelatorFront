@@ -20,13 +20,13 @@ export default function LoginForm() {
         }
 
         try {
-            const response = await axios.post('http://localhost:9002/login', loginData);
+            const response = await axios.post('http://localhost:9002/login', loginData, {withCredentials: true});
 
             console.log(response)
             console.log('przed ifem')
             if(response.status === 200){
                 console.log('Wnetrze ifa')
-                navigate("/loginSuccess");
+                navigate("/");
             }
         } catch (error) {
             if(error.response) {
