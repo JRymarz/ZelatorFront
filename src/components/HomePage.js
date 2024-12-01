@@ -10,7 +10,7 @@ function HomePage() {
     useEffect(() => {
         const fetchCurrenttUser = async () => {
             try {
-                const response = await axios.get("http://localhost:9002/", {withCredentials: true});
+                const response = await axios.get("http://localhost:9002/current-user", {withCredentials: true});
                 console.log('Zalogowany user:', response.data);
                 setUser(response.data);
             } catch (error) {
@@ -43,6 +43,7 @@ function HomePage() {
             {user ? (
                 <>
                     <p><strong>E-mail:</strong> {user.email}</p>
+                    {user.role}
                     <button onClick={handleLogout}>Wyloguj się</button>
                 </>
             ) : (
