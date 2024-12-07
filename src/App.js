@@ -4,9 +4,12 @@ import HomePage from "./components/HomePage";
 import LoginForm from "./components/LoginForm";
 import LoginSuccess from "./components/LoginSuccess";
 import ProtectedRoutes from "./components/ProtectedRoutes";
+import ProtectedRoutesForZelator from "./components/ProtectedRoutesForZelator";
 import CreateZelator from "./components/CreateZelator";
 import NotAuthorized from "./pages/NotAuthorized";
 import {UserProvider} from "./context/UserContext";
+import CreateUser from "./components/CreateUser";
+import CreateGroup from "./components/CreateGroup";
 
 
 function App() {
@@ -24,6 +27,22 @@ function App() {
                           <ProtectedRoutes>
                               <CreateZelator />
                           </ProtectedRoutes>
+                      }
+                  />
+                  <Route
+                    path="/create-user"
+                    element={
+                      <ProtectedRoutesForZelator>
+                          <CreateUser />
+                      </ProtectedRoutesForZelator>
+                    }
+                  />
+                  <Route
+                      path="/create-group"
+                      element={
+                          <ProtectedRoutesForZelator>
+                              <CreateGroup />
+                          </ProtectedRoutesForZelator>
                       }
                   />
               </Routes>
