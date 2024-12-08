@@ -10,6 +10,7 @@ import NotAuthorized from "./pages/NotAuthorized";
 import {UserProvider} from "./context/UserContext";
 import CreateUser from "./components/CreateUser";
 import CreateGroup from "./components/CreateGroup";
+import Members from "./components/Members";
 
 
 function App() {
@@ -42,6 +43,14 @@ function App() {
                       element={
                           <ProtectedRoutesForZelator>
                               <CreateGroup />
+                          </ProtectedRoutesForZelator>
+                      }
+                  />
+                  <Route
+                      path="/members"
+                      element={
+                          <ProtectedRoutesForZelator>
+                              <Members />
                           </ProtectedRoutesForZelator>
                       }
                   />
