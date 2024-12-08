@@ -11,6 +11,7 @@ import {UserProvider} from "./context/UserContext";
 import CreateUser from "./components/CreateUser";
 import CreateGroup from "./components/CreateGroup";
 import Members from "./components/Members";
+import MyRose from "./components/MyRose";
 
 
 function App() {
@@ -51,6 +52,14 @@ function App() {
                       element={
                           <ProtectedRoutesForZelator>
                               <Members />
+                          </ProtectedRoutesForZelator>
+                      }
+                  />
+                  <Route
+                      path="/my-rose"
+                      element={
+                          <ProtectedRoutesForZelator>
+                              <MyRose />
                           </ProtectedRoutesForZelator>
                       }
                   />
