@@ -12,6 +12,7 @@ import CreateUser from "./components/CreateUser";
 import CreateGroup from "./components/CreateGroup";
 import Members from "./components/Members";
 import MyRose from "./components/MyRose";
+import PlanMysteryChange from "./components/PlanMysteryChange";
 
 
 function App() {
@@ -60,6 +61,14 @@ function App() {
                       element={
                           <ProtectedRoutesForZelator>
                               <MyRose />
+                          </ProtectedRoutesForZelator>
+                      }
+                  />
+                  <Route
+                      path="/mystery-change"
+                      element={
+                          <ProtectedRoutesForZelator>
+                              <PlanMysteryChange />
                           </ProtectedRoutesForZelator>
                       }
                   />
