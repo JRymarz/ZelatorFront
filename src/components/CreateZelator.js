@@ -1,8 +1,15 @@
 import React, {useState} from "react";
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
+import {AppBar, Toolbar, Typography, Button, Box, TextField, CircularProgress} from "@mui/material";
+import {useUser} from "../context/UserContext";
+import LogoutIcon from '@mui/icons-material/Logout';
 
 
 function CreateZelator() {
+    const navigate = useNavigate();
+    const [user, setUser] = useState(useUser);
+
     const [formData, setFormData] = useState({
         email: "",
         password: "",
@@ -32,27 +39,169 @@ function CreateZelator() {
         }
     };
 
+    const handleHome = () => {
+        navigate('/');
+    };
+
+    const handleLogout = async () => {
+        try {
+            const response = await axios.post("http://localhost:9002/logout", {}, {withCredentials: true});
+            console.log(response.data);
+
+            setUser(null);
+            navigate('/login');
+        } catch (error) {
+            console.error("Blad przy wylogowywaniu", error);
+            navigate('/login');
+        }
+    };
+
 
     return(
-        <form onSubmit={handleSubmit}>
-            <label>
-                Imię:
-                <input type="text" name="firstName" value={formData.firstName} onChange={handleChange} required />
-            </label>
-            <label>
-                Nazwisko:
-                <input type="text" name="lastName" value={formData.lastName} onChange={handleChange} required />
-            </label>
-            <label>
-                Email:
-                <input type="email" name="email" value={formData.email} onChange={handleChange} required  />
-            </label>
-            <label>
-                Hasło:
-                <input type="password" name="password" value={formData.password} onChange={handleChange} required />
-            </label>
-            <button type="submit">Utwórz nowe konto</button>
-        </form>
+        <div style={{minHeight: '100vh', backgroundColor: '#f0f4c3', margin: 0, padding: 0}}>
+            <AppBar position="static" sx={{marginBottom: 4, backgroundColor: '#ff5252'}}>
+                <Toolbar sx={{
+                    maxWidth: '1500px',
+                    width: '100%',
+                    margin: '0 auto',
+                    display: 'flex',
+                    justifyContent: 'space-beetween'
+                }}>
+                    <Typography sx={{cursor: 'pointer'}} onClick={handleHome}>
+                        <img
+                            src="/rosaryIco.png"
+                            style={{width: 50, height: 50, marginRight: 8}}
+                        />
+                    </Typography>
+                    <Typography
+                        variant="h4"
+                        sx={{
+                            flexGrow: 1, cursor: 'pointer',
+                            mr: 2,
+                            display: {xs: 'none', md: 'flex'},
+                            fontFamily: 'monospace',
+                            fontWeight: 300,
+                            letterSpacing: '.3rem',
+                            color: 'inherit',
+                            textDecoration: 'none',
+                        }}
+
+                        onClick={handleHome}
+                    >
+                        Zelator
+                    </Typography>
+
+                    <Box>
+                        <Button color="inherit" onClick={handleLogout}>
+                            Wyloguj się
+                            <LogoutIcon sx={{fontSize: 40, marginLeft: 1}}></LogoutIcon>
+                        </Button>
+                    </Box>
+                </Toolbar>
+            </AppBar>
+
+            <div style={{
+                padding: '20px',
+                paddingRight: '40px',
+                textAlign: 'center',
+                borderRadius: '10px',
+                border: '3px solid #ff5252',
+                backgroundColor: '#f9fbe7',
+                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                margin: '0 auto',
+                maxWidth: '500px',
+            }}>
+                <h2>Utwórz nowe konto dla Zelatora</h2>
+
+                <form onSubmit={handleSubmit}>
+                    {/*<label>*/}
+                    {/*    Imię:*/}
+                    {/*    <input type="text" name="firstName" value={formData.firstName} onChange={handleChange}*/}
+                    {/*           required/>*/}
+                    {/*</label>*/}
+                    <TextField
+                        label="Imię"
+                        variant="outlined"
+                        name="firstName"
+                        value={formData.firstName}
+                        onChange={handleChange}
+                        required
+                        fullWidth
+                        sx={{marginBottom: 2}}
+                    />
+                    {/*<label>*/}
+                    {/*    Nazwisko:*/}
+                    {/*    <input type="text" name="lastName" value={formData.lastName} onChange={handleChange} required/>*/}
+                    {/*</label>*/}
+                    <TextField
+                        label="Nazwisko"
+                        variant="outlined"
+                        name="lastName"
+                        value={formData.lastName}
+                        onChange={handleChange}
+                        required
+                        fullWidth
+                        sx={{marginBottom: 2}}
+                    />
+                    {/*<label>*/}
+                    {/*    Email:*/}
+                    {/*    <input type="email" name="email" value={formData.email} onChange={handleChange} required/>*/}
+                    {/*</label>*/}
+                    <TextField
+                        label="Email"
+                        variant="outlined"
+                        name="email"
+                        type="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        required
+                        fullWidth
+                        sx={{marginBottom: 2}}
+                    />
+                    {/*<label>*/}
+                    {/*    Hasło:*/}
+                    {/*    <input type="password" name="password" value={formData.password} onChange={handleChange}*/}
+                    {/*           required/>*/}
+                    {/*</label>*/}
+                    <TextField
+                        label="Hasło"
+                        variant="outlined"
+                        name="password"
+                        type="password"
+                        value={formData.password}
+                        onChange={handleChange}
+                        required
+                        fullWidth
+                        sx={{marginBottom: 2}}
+                    />
+
+                    {/*<button type="submit">Utwórz nowe konto</button>*/}
+                    <Button
+                        type="submit"
+                        variant="contained"
+                        color="error"
+                        sx={{width: '100%', marginTop: '20px'}}
+                    >
+                        Utwórz konto
+                    </Button>
+                </form>
+            </div>
+
+            <footer style={{
+                backgroundColor: '#ff5252',
+                color: '#fff',
+                textAlign: 'center',
+                padding: '10px 0',
+                position: 'absolute',
+                bottom: 0,
+                width: '100%',
+                marginTop: 'auto',
+            }}>
+                <Typography variant="body2">
+                    &copy; 2024 Zelator. Wszystkie prawa zastrzeżone.
+                </Typography>
+            </footer>
+        </div>
     );
 
 }
