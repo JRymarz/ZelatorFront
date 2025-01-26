@@ -15,6 +15,7 @@ import MyRose from "./components/MyRose";
 import PlanMysteryChange from "./components/PlanMysteryChange";
 import DashboardZelator from "./components/DashboardZelator";
 import Masses from "./components/Masses";
+import CalendarView from "./components/CalendarView";
 
 
 function App() {
@@ -87,6 +88,14 @@ function App() {
                       element={
                           <ProtectedRoutesForZelator>
                               <Masses />
+                          </ProtectedRoutesForZelator>
+                      }
+                  />
+                  <Route
+                      path="/calendar"
+                      element={
+                          <ProtectedRoutesForZelator>
+                              <CalendarView />
                           </ProtectedRoutesForZelator>
                       }
                   />
