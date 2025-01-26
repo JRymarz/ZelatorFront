@@ -289,64 +289,6 @@ function MyRose() {
                 )}
             </Box>
 
-            {/*<h1>Moja róża</h1>*/}
-            {/*<h2>{roseDetails.name}</h2>*/}
-            {/*<p><strong>Obecna intencja:</strong> {roseDetails.intention.title}</p>*/}
-            {/*<p>{roseDetails.intention.description}</p>*/}
-            {/*<h3>Członkowie róży:</h3>*/}
-            {/*<table>*/}
-            {/*    <thead>*/}
-            {/*        <tr>*/}
-            {/*            <th>Imię</th>*/}
-            {/*            <th>Nazwisko</th>*/}
-            {/*            <th>Tajemnica</th>*/}
-            {/*            <th>Akcja</th>*/}
-            {/*        </tr>*/}
-            {/*    </thead>*/}
-            {/*    <tbody>*/}
-            {/*    {roseDetails.members.map(member => (*/}
-            {/*        <tr key={member.id}>*/}
-            {/*            <td>{member.firstName}</td>*/}
-            {/*            <td>{member.lastName}</td>*/}
-            {/*            <td>{member.mystery?.name || "Nie przypisano tajemnicy"}</td>*/}
-            {/*            <td>*/}
-            {/*                {member.mystery.id === null && (*/}
-            {/*                    <button*/}
-            {/*                        onClick={() => {*/}
-            {/*                            setSelectedMember(member.id);*/}
-            {/*                            fetchAvailableMysteries(roseDetails.id);*/}
-            {/*                        }}*/}
-            {/*                    >*/}
-            {/*                     Przypisz tajemnicę*/}
-            {/*                    </button>*/}
-            {/*                )}*/}
-            {/*                {user && user.id !== member.id && (*/}
-            {/*                    <button onClick={() => handleRemoveMember(member.id)}>*/}
-            {/*                        Usuń członka*/}
-            {/*                    </button>*/}
-            {/*                )}*/}
-            {/*            </td>*/}
-            {/*        </tr>*/}
-            {/*    ))}*/}
-            {/*    </tbody>*/}
-            {/*</table>*/}
-
-            {/*{selectedMember && (*/}
-            {/*    <div className="modal">*/}
-            {/*        <h3>Przypisz tajemnicę</h3>*/}
-            {/*        <select onChange={(e) => setSelectedMystery(e.target.value)} value={selectedMystery || ""}>*/}
-            {/*            <option value="">Wybierz tajemnicę</option>*/}
-            {/*            {availableMysteries.map((mystery) => (*/}
-            {/*                <option key={mystery.id} value={mystery.id}>*/}
-            {/*                    {mystery.name}*/}
-            {/*                </option>*/}
-            {/*                ))}*/}
-            {/*        </select>*/}
-            {/*        <button onClick={() => handleAssignMystery(selectedMember)}>Przypisz</button>*/}
-            {/*        <button onClick={() => setSelectedMember(null)}>Anuluj</button>*/}
-            {/*    </div>*/}
-            {/*)}*/}
-
             <footer style={{
                 backgroundColor: '#ff5252',
                 color: '#fff',
@@ -358,7 +300,7 @@ function MyRose() {
                 marginTop: 'auto',
             }}>
                 <Typography variant="body2">
-                    &copy; 2024 Zelator. Wszystkie prawa zastrzeżone.
+                    &copy; 2025 Zelator. Wszystkie prawa zastrzeżone.
                 </Typography>
             </footer>
         </div>

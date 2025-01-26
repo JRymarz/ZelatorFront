@@ -14,6 +14,7 @@ import Members from "./components/Members";
 import MyRose from "./components/MyRose";
 import PlanMysteryChange from "./components/PlanMysteryChange";
 import DashboardZelator from "./components/DashboardZelator";
+import Masses from "./components/Masses";
 
 
 function App() {
@@ -78,6 +79,14 @@ function App() {
                       element={
                           <ProtectedRoutesForZelator>
                               <DashboardZelator />
+                          </ProtectedRoutesForZelator>
+                      }
+                  />
+                  <Route
+                      path="/masses"
+                      element={
+                          <ProtectedRoutesForZelator>
+                              <Masses />
                           </ProtectedRoutesForZelator>
                       }
                   />

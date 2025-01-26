@@ -209,7 +209,7 @@ function HomePage() {
                 marginTop: 'auto',
             }}>
                 <Typography variant="body2">
-                    &copy; 2024 Zelator. Wszystkie prawa zastrzeżone.
+                    &copy; 2025 Zelator. Wszystkie prawa zastrzeżone.
                 </Typography>
             </footer>
         </div>
