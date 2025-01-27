@@ -16,6 +16,8 @@ import PlanMysteryChange from "./components/PlanMysteryChange";
 import DashboardZelator from "./components/DashboardZelator";
 import Masses from "./components/Masses";
 import CalendarView from "./components/CalendarView";
+import ChatList from "./components/ChatList";
+import ChatView from "./components/ChatView";
 
 
 function App() {
@@ -96,6 +98,22 @@ function App() {
                       element={
                           <ProtectedRoutesForZelator>
                               <CalendarView />
+                          </ProtectedRoutesForZelator>
+                      }
+                  />
+                  <Route
+                      path="/chat"
+                      element={
+                          <ProtectedRoutesForZelator>
+                              <ChatList />
+                          </ProtectedRoutesForZelator>
+                      }
+                  />
+                  <Route
+                      path="/chat/:type/:id"
+                      element={
+                          <ProtectedRoutesForZelator>
+                              <ChatView />
                           </ProtectedRoutesForZelator>
                       }
                   />
