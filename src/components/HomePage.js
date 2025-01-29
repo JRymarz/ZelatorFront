@@ -4,11 +4,15 @@ import {Link, useNavigate} from "react-router-dom";
 import {AppBar, Toolbar, Typography, Button, Box} from "@mui/material";
 import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
+import {useUser} from "../context/UserContext";
 
 function HomePage() {
 
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState(useUser);
     const navigate = useNavigate();
+    const loggedUser = useUser();
+    const userRole = loggedUser.role;
+
 
     useEffect(() => {
         const fetchCurrenttUser = async () => {
@@ -48,8 +52,16 @@ function HomePage() {
     };
 
 
+    useEffect(() => {
+        document.body.style.margin = "0";
+        document.body.style.padding = "0";
+        document.documentElement.style.margin = "0";
+        document.documentElement.style.padding = "0";
+    }, []);
+
+
     return (
-        <div style={{minHeight: '100vh', backgroundColor: '#f0f4c3', margin: 0, padding: 0}}>
+        <div style={{minHeight: '100vh', backgroundColor: '#f0f4c3', margin: 0, padding: 0, display: "flex", flexDirection: "column"}}>
             <AppBar position="static" sx={{marginBottom: 4, backgroundColor: '#ff5252'}}>
                 <Toolbar sx={{
                     maxWidth: '1500px',
@@ -123,9 +135,11 @@ function HomePage() {
                 <p>Nasza aplikacja pomaga zarządzać grupami modlitewnymi, planować zmiany tajemnic różańcowych i modlić
                     się wspólnie.</p>
 
-                <Button variant="outlined" color="error" onClick={handleLogin}>
-                    Zaloguj się, aby zacząć
-                </Button>
+                {user?.role !== "Zelator" && user?.role!== "MainZelator" && (
+                    <Button variant="outlined" color="error" onClick={handleLogin}>
+                        Zaloguj się, aby zacząć
+                    </Button>
+                )}
 
                 <div style={{marginTop: '30px'}}>
                     <h3>Dlaczego warto?</h3>
@@ -209,7 +223,7 @@ function HomePage() {
                 marginTop: 'auto',
             }}>
                 <Typography variant="body2">
-                    &copy; 2025 Zelator. Wszystkie prawa zastrzeżone.
+                    &copy; 2025 Zelator. Autor: Jakub Rymarz.
                 </Typography>
             </footer>
         </div>

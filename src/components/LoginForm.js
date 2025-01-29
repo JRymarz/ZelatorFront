@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
 import {useUser} from "../context/UserContext";
@@ -50,8 +50,16 @@ export default function LoginForm() {
     };
 
 
+    useEffect(() => {
+        document.body.style.margin = "0";
+        document.body.style.padding = "0";
+        document.documentElement.style.margin = "0";
+        document.documentElement.style.padding = "0";
+    }, []);
+
+
     return(
-        <div style={{minHeight: '100vh', backgroundColor: '#f0f4c3', margin: 0, padding: 0}}>
+        <div style={{minHeight: '100vh', backgroundColor: '#f0f4c3', margin: 0, padding: 0, display: "flex", flexDirection: "column"}}>
             <AppBar position="static" sx={{marginBottom: 4, backgroundColor: '#ff5252'}}>
                 <Toolbar sx={{
                     maxWidth: '1500px',
@@ -96,7 +104,8 @@ export default function LoginForm() {
                 backgroundColor: '#f9fbe7', // Tło dla kontenera
                 boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', // Opcjonalny cień
                 margin: '0 auto', // Centrowanie w poziomie
-                maxWidth: '500px',
+                maxWidth: '30%',
+                width: '30%',
             }}>
                 <h2>Logowanie</h2>
 
@@ -142,7 +151,7 @@ export default function LoginForm() {
                         type="submit"
                         variant="contained"
                         color="error"
-                        sx={{width: '100%', marginTop: '20px'}}
+                        sx={{width: '70%', marginTop: '20px'}}
                     >
                         Zaloguj
                     </Button>
@@ -161,7 +170,7 @@ export default function LoginForm() {
                 marginTop: 'auto',
             }}>
                 <Typography variant="body2">
-                    &copy; 2025 Zelator. Wszystkie prawa zastrzeżone.
+                    &copy; 2025 Zelator. Autor: Jakub Rymarz.
                 </Typography>
             </footer>
         </div>

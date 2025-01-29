@@ -118,6 +118,14 @@ function MyRose() {
     };
 
 
+    useEffect(() => {
+        document.body.style.margin = "0";
+        document.body.style.padding = "0";
+        document.documentElement.style.margin = "0";
+        document.documentElement.style.padding = "0";
+    }, []);
+
+
     if(loading) return <p>Ładowanie...</p>;
     if(error) return <p>{error}</p>;
 
