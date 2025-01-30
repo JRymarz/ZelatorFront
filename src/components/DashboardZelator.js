@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import {Box, Typography, Button, Grid, Paper} from "@mui/material";
+import {Box, Typography, Button, Grid, Paper, Badge, Tooltip, Avatar} from "@mui/material";
 import {Link} from 'react-router-dom';
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
@@ -12,8 +12,134 @@ import { Table, TableHead, TableBody, TableRow, TableCell, TableContainer,} from
 
 const DashboardZelator = () => {
     const [user, setUser] = useState(useUser);
+    const [areUnread, setAreUnread] = useState(false);
+    const [areRequests, setAreRequests] = useState(false);
+    const [currentTime, setCurrentTime] = useState(new Date());
+    const [intention, setIntention] = useState(null);
+    const [mystery, setMystery] = useState(null);
+    const [groupMembers, setGroupMembers] = useState([]);
+    const [nextEvent, setNextEvent] = useState(null);
 
     const navigate = useNavigate();
+
+
+    useEffect(() => {
+        const fetchNextEvent = async () => {
+            try {
+                const reponse = await axios.get('http://localhost:9002/calendar-events/next',
+                    {withCredentials: true});
+
+                setNextEvent(reponse.data);
+            } catch (error) {
+                console.error("Błąd: ", error.message);
+            }
+        };
+
+        fetchNextEvent();
+
+        const intervalId = setInterval(fetchNextEvent, 60000);
+
+        return () => clearInterval(intervalId);
+    }, []);
+
+
+    useEffect(() => {
+        const fetchGroupMembers = async () => {
+            try {
+                const response = await axios.get("http://localhost:9002/members-status", {
+                    withCredentials: true,
+                });
+
+                setGroupMembers(response.data);
+            } catch (error) {
+                console.error("Bład: ", error.message);
+            }
+        };
+
+        fetchGroupMembers();
+    }, []);
+
+
+    useEffect(() => {
+        const timer = setInterval(() => setCurrentTime(new Date()), 30000);
+        return () => clearInterval(timer);
+    }, []);
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get("http://localhost:9002/intention-mystery", {
+                    withCredentials: true,
+                });
+
+                if(response.status === 200) {
+                    const data = await response.data;
+                    setIntention(data.intention?.title || "Brak przypisania do róży");
+                    setMystery(data.mystery?.name || "Brak przypisanej tajemnicy");
+                } else {
+                    console.error("Bład podczas pobierania danych");
+                }
+            } catch (error) {
+                console.error("Nieoczekiwany bład: ", error.message);
+            }
+        };
+        
+        fetchData();
+    }, []);
+
+
+    const formatDateTime = () => {
+        const days = ["Niedziela", "Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota"];
+        const months = ["stycznia", "lutego", "marca", "kwietnia", "maja", "czerwca", "lipca", "sierpnia", "września", "października", "listopada", "grudnia"];
+        const day = days[currentTime.getDay()];
+        const date = currentTime.getDate();
+        const month = months[currentTime.getMonth()];
+        const year = currentTime.getFullYear();
+        const hours = currentTime.getHours().toString().padStart(2, '0');
+        const minutes = currentTime.getMinutes().toString().padStart(2, '0');
+
+        return `${day}, ${date} ${month} ${year} - ${hours}:${minutes}`;
+    };
+
+
+    useEffect(() => {
+        const fetchAreUnread = async () => {
+            try {
+                const response = await axios.get("http://localhost:9002/chat/are-unread", {
+                    withCredentials: true,
+                });
+
+                setAreUnread(response.data);
+            } catch (error) {
+                console.error("Nie udało się pobrać nieprzeczytanych");
+            }
+        };
+
+        const intervalId = setInterval(fetchAreUnread, 3000);
+
+        return () => clearInterval(intervalId);
+    })
+
+
+    useEffect(() => {
+        const fetchAreRequests = async () => {
+            try {
+                const response = await axios.get("http://localhost:9002/mass-request/are-unchecked", {
+                    withCredentials: true,
+                });
+                
+                setAreRequests(response.data);
+            } catch (error) {
+                console.error("Nie udało się pobrać requestów");
+            }
+        };
+
+        const intervalId = setInterval(fetchAreRequests, 3000);
+
+        return () => clearInterval(intervalId);
+    }, []);
+
 
     const handleHome = () => {
         navigate('/');
@@ -33,8 +159,38 @@ const DashboardZelator = () => {
     };
 
 
+    useEffect(() => {
+        document.body.style.margin = "0";
+        document.body.style.padding = "0";
+        document.documentElement.style.margin = "0";
+        document.documentElement.style.padding = "0";
+    }, []);
+
+
+    const handleReminder = (memberId) => {
+        if(window.confirm("Czy chcesz wysłać przypomnienie o modlitwie?")) {
+            sendReminder(memberId);
+        }
+    };
+
+
+    const sendReminder = async (memberId) => {
+        alert("TODO");
+        // try {
+        //     await axios.post("http://localhost:9002/reminder",
+        //         {memberId},
+        //         {withCredentials: true});
+        //
+        //     alert("Przypomnienie wysłane!");
+        // } catch(error) {
+        //     console.error("Bład wysyłania przypomnienia:", error);
+        //     alert("Nie udało się wysłać przypomnienia.");
+        // }
+    }
+
+
     return (
-        <div style={{minHeight: '100vh', backgroundColor: '#f0f4c3', margin: 0, padding: 0}}>
+        <div style={{minHeight: '100vh', backgroundColor: '#f0f4c3', margin: 0, padding: 0, display: "flex", flexDirection: "column"}}>
             <AppBar position="static" sx={{marginBottom: 4, backgroundColor: '#ff5252'}}>
                 <Toolbar sx={{
                     maxWidth: '1500px',
@@ -93,11 +249,77 @@ const DashboardZelator = () => {
                 boxShadow: 2,
                 width: '800px',
                 marginLeft: 'auto',
-                marginRight: 'auto'
+                marginRight: 'auto',
+                marginBottom: '2',
             }}>
                 <Typography variant="h4" gutterBottom>
                     Pulpit Zelatora
                 </Typography>
+
+                <Paper sx={{ padding: 3, borderRadius: '8px', boxShadow: 3, marginBottom: 3 }}>
+                    <Typography variant="h6"><strong>Obecna data i godzina:</strong> {formatDateTime(currentTime)}</Typography>
+                    <Typography variant="h6"><strong>Zalogowano jako:</strong> {user.user.firstName} {user.user.lastName} ({user.user.email})</Typography>
+                    <Typography variant="h6"><strong>Dzisiejsza intencja:</strong> {intention}</Typography>
+                    <Typography variant="h6"><strong>Twoja tajemnica:</strong> {mystery}</Typography>
+
+                    {nextEvent ? (
+                        <>
+                            <Typography variant="h6"><strong>Najbliższe wydarzenie:</strong></Typography>
+                            <Typography variant="body1"><strong>Tytuł:</strong> {nextEvent.title}</Typography>
+                            <Typography variant="body1"><strong>Data:</strong> {new Date(nextEvent.eventDate).toLocaleString()}</Typography>
+                        </>
+                    ) : (
+                        <Typography variant="h6">Brak nadchodzących wydarzeń</Typography>
+                    )}
+
+                </Paper>
+
+                {user.user.group && (
+                    <Box
+                        sx={{
+                            display: "flex",
+                            justifyContent: "center",
+                            position: "relative", // Potrzebne do ustawienia róż wokół środka
+                            height: 250, // Wysokość kontenera
+                            width: 250, // Szerokość kontenera
+                            margin: "0 auto",
+                            mt: 3,
+                            mb: 5, // Dodaje odstęp od kafelków
+                        }}
+                    >
+                        {groupMembers.map((member, index) => {
+                            const angle = (index / groupMembers.length) * 2 * Math.PI; // Obliczenie kąta dla każdej róży
+                            const radius = 100; // Promień okręgu
+                            const x = radius * Math.cos(angle); // Współrzędna X
+                            const y = radius * Math.sin(angle); // Współrzędna Y
+
+                            return (
+                                <Tooltip key={member.id} title={`${member.firstName} ${member.lastName}`} arrow>
+                                    <Avatar
+                                        sx={{
+                                            bgcolor: member.status ? "#ff5252" : "black",
+                                            width: 40,
+                                            height: 40,
+                                            cursor: (member.id === user.user.id || member.status) ? "default" : "pointer",
+                                            position: "absolute",
+                                            left: `calc(50% + ${x}px - 20px)`, // Ustawienie środka na podstawie pozycji X
+                                            top: `calc(50% + ${y}px - 20px)`, // Ustawienie środka na podstawie pozycji Y
+                                            transition: "transform 0.2s ease-in-out",
+                                            "&:hover": {
+                                                transform: (member.id !== user.user.id && !member.status) ? "scale(1.1)" : "none",
+                                            },
+                                        }}
+                                        onClick={() =>
+                                            (member.id !== user.user.id && !member.status) && handleReminder(member.id)
+                                        }
+                                    >
+                                        🌹
+                                    </Avatar>
+                                </Tooltip>
+                            );
+                        })}
+                    </Box>
+                )}
 
                 <Grid container spacing={3}>
                     {/* Sekcja z linkami do innych stron */}
@@ -127,6 +349,7 @@ const DashboardZelator = () => {
                         </Paper>
                     </Grid>
 
+                    {!user.user.group && (
                     <Grid item xs={12} md={6}>
                         <Paper sx={{ padding: 3, borderRadius: '8px', boxShadow: 3 }}>
                             <Typography variant="h6" gutterBottom>
@@ -152,6 +375,7 @@ const DashboardZelator = () => {
                             </Button>
                         </Paper>
                     </Grid>
+                    )}
 
                     <Grid item xs={12} md={6}>
                         <Paper sx={{ padding: 3, borderRadius: '8px', boxShadow: 3 }}>
@@ -179,6 +403,7 @@ const DashboardZelator = () => {
                         </Paper>
                     </Grid>
 
+                    {user.user.group && (
                     <Grid item xs={12} md={6}>
                         <Paper sx={{ padding: 3, borderRadius: '8px', boxShadow: 3 }}>
                             <Typography variant="h6" gutterBottom>
@@ -204,6 +429,137 @@ const DashboardZelator = () => {
                             </Button>
                         </Paper>
                     </Grid>
+                    )}
+
+                    {user.user.group && (
+                        <Grid item xs={12} md={6}>
+                            <Paper sx={{ padding: 3, borderRadius: '8px', boxShadow: 3 }}>
+                                <Typography variant="h6" gutterBottom>
+                                    Kalendarz
+                                </Typography>
+                                <Button
+                                    variant="contained"
+                                    color="error"
+                                    fullWidth
+                                    component={Link}
+                                    to="/calendar"
+                                    sx={{
+                                        borderRadius: '5px',
+                                        padding: '10px',
+                                        fontSize: '16px',
+                                        backgroundColor: '#ff5252',
+                                        '&:hover': {
+                                            backgroundColor: '#e03e3e'
+                                        }
+                                    }}
+                                >
+                                    Zobacz wydarzenia
+                                </Button>
+                            </Paper>
+                        </Grid>
+                    )}
+
+                    {user.user.group && (
+                        <Grid item xs={12} md={6}>
+                            <Badge
+                                color="error"
+                                variant="dot"
+                                overlap="rectangular"
+                                invisible={!areUnread}
+                                sx={{ width: "100%" }}
+                            >
+                                <Paper sx={{ padding: 3, borderRadius: '8px', boxShadow: 3, width: '100%' }}>
+                                    <Typography variant="h6" gutterBottom>
+                                        Chat
+                                    </Typography>
+                                    <Button
+                                        variant="contained"
+                                        color="error"
+                                        fullWidth
+                                        component={Link}
+                                        to="/chat"
+                                        sx={{
+                                            borderRadius: '5px',
+                                            padding: '10px',
+                                            fontSize: '16px',
+                                            backgroundColor: '#ff5252',
+                                            '&:hover': {
+                                                backgroundColor: '#e03e3e'
+                                            }
+                                        }}
+                                    >
+                                        Przeglądaj konwersacje
+                                    </Button>
+                                </Paper>
+                            </Badge>
+                        </Grid>
+                    )}
+
+                    {user.user.role === 'MainZelator' && (
+                        <Grid item xs={12} md={6}>
+                            <Paper sx={{ padding: 3, borderRadius: '8px', boxShadow: 3 }}>
+                                <Typography variant="h6" gutterBottom>
+                                    Zarządzanie Zelatorami
+                                </Typography>
+                                <Button
+                                    variant="contained"
+                                    color="error"
+                                    fullWidth
+                                    component={Link}
+                                    to="/create-zelator"
+                                    sx={{
+                                        borderRadius: '5px',
+                                        padding: '10px',
+                                        fontSize: '16px',
+                                        backgroundColor: '#ff5252',
+                                        '&:hover': {
+                                            backgroundColor: '#e03e3e'
+                                        }
+                                    }}
+                                >
+                                    Dodaj Zelatora
+                                </Button>
+                            </Paper>
+                        </Grid>
+                    )}
+
+                    {user.user.group && (
+                        <Grid item xs={12} md={6}>
+                            <Badge
+                                color="error"
+                                variant="dot"
+                                overlap="rectangular"
+                                invisible={!areRequests}
+                                sx={{ width: "100%" }}
+                            >
+                            <Paper sx={{ padding: 3, borderRadius: '8px', boxShadow: 3, width: '100%' }}>
+                                <Typography variant="h6" gutterBottom>
+                                    Msze Święte
+                                </Typography>
+                                <Button
+                                    variant="contained"
+                                    color="error"
+                                    fullWidth
+                                    component={Link}
+                                    to="/masses"
+                                    sx={{
+                                        borderRadius: '5px',
+                                        padding: '10px',
+                                        fontSize: '16px',
+                                        backgroundColor: '#ff5252',
+                                        '&:hover': {
+                                            backgroundColor: '#e03e3e'
+                                        }
+                                    }}
+                                >
+                                    Zobacz prośby
+                                </Button>
+                            </Paper>
+                            </Badge>
+                        </Grid>
+                    )}
+
+
                 </Grid>
             </Box>
 
@@ -212,13 +568,11 @@ const DashboardZelator = () => {
                 color: '#fff',
                 textAlign: 'center',
                 padding: '10px 0',
-                position: 'absolute',
-                bottom: 0,
                 width: '100%',
                 marginTop: 'auto',
             }}>
                 <Typography variant="body2">
-                    &copy; 2025 Zelator. Wszystkie prawa zastrzeżone.
+                    &copy; 2025 Zelator. Autor: Jakub Rymarz.
                 </Typography>
             </footer>
         </div>
