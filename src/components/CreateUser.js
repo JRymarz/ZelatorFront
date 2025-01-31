@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {Link, useNavigate} from "react-router-dom";
 import {AppBar, Toolbar, Typography, Button, Box, TextField, CircularProgress} from "@mui/material";
@@ -58,9 +58,16 @@ function CreateUser() {
     };
 
 
+    useEffect(() => {
+        document.body.style.margin = "0";
+        document.body.style.padding = "0";
+        document.documentElement.style.margin = "0";
+        document.documentElement.style.padding = "0";
+    }, []);
+
 
     return(
-        <div style={{minHeight: '100vh', backgroundColor: '#f0f4c3', margin: 0, padding: 0}}>
+        <div style={{minHeight: '100vh', backgroundColor: '#f0f4c3', margin: 0, padding: 0, display: "flex", flexDirection: "column"}}>
             <AppBar position="static" sx={{marginBottom: 4, backgroundColor: '#ff5252'}}>
                 <Toolbar sx={{
                     maxWidth: '1500px',
@@ -227,13 +234,11 @@ function CreateUser() {
                 color: '#fff',
                 textAlign: 'center',
                 padding: '10px 0',
-                position: 'absolute',
-                bottom: 0,
                 width: '100%',
                 marginTop: 'auto',
             }}>
                 <Typography variant="body2">
-                    &copy; 2024 Zelator. Wszystkie prawa zastrzeżone.
+                    &copy; 2025 Zelator. Autor: Jakub Rymarz.
                 </Typography>
             </footer>
         </div>

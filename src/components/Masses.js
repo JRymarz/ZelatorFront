@@ -87,11 +87,20 @@ function Masses() {
         }
     };
 
+
+    useEffect(() => {
+        document.body.style.margin = "0";
+        document.body.style.padding = "0";
+        document.documentElement.style.margin = "0";
+        document.documentElement.style.padding = "0";
+    }, []);
+
+
     if (loading) return <p>Ładowanie...</p>;
     if (error) return <p>{error}</p>;
 
     return (
-        <div style={{ minHeight: "100vh", backgroundColor: "#f0f4c3", margin: 0, padding: 0 }}>
+        <div style={{ minHeight: "100vh", backgroundColor: "#f0f4c3", margin: 0, padding: 0, display: "flex", flexDirection: "column" }}>
             <AppBar position="static" sx={{ marginBottom: 4, backgroundColor: "#ff5252" }}>
                 <Toolbar
                     sx={{
@@ -215,19 +224,17 @@ function Masses() {
                 )}
             </Box>
 
-            <footer
-                style={{
-                    backgroundColor: "#ff5252",
-                    color: "#fff",
-                    textAlign: "center",
-                    padding: "10px 0",
-                    position: "absolute",
-                    bottom: 0,
-                    width: "100%",
-                    marginTop: "auto",
-                }}
-            >
-                <Typography variant="body2">&copy; 2025 Zelator. Wszystkie prawa zastrzeżone.</Typography>
+            <footer style={{
+                backgroundColor: '#ff5252',
+                color: '#fff',
+                textAlign: 'center',
+                padding: '10px 0',
+                width: '100%',
+                marginTop: 'auto',
+            }}>
+                <Typography variant="body2">
+                    &copy; 2025 Zelator. Autor: Jakub Rymarz.
+                </Typography>
             </footer>
         </div>
     );

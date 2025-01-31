@@ -1,13 +1,24 @@
-import React, {useState, useEffect, useCallback} from 'react';
-import {Box, Typography, Button, Grid, Paper, Badge, Tooltip, Avatar} from "@mui/material";
+import React, {useState, useEffect} from 'react';
+import {
+    Box,
+    Typography,
+    Button,
+    Grid,
+    Paper,
+    Badge,
+    Tooltip,
+    Avatar,
+    DialogTitle,
+    DialogContent,
+    Dialog
+} from "@mui/material";
 import {Link} from 'react-router-dom';
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
-import {AppBar, Toolbar, TextField, CircularProgress} from "@mui/material";
+import {AppBar, Toolbar} from "@mui/material";
 import {useUser} from "../context/UserContext";
 import LogoutIcon from '@mui/icons-material/Logout';
-import { FormControlLabel, Switch } from "@mui/material";
-import { Table, TableHead, TableBody, TableRow, TableCell, TableContainer,} from "@mui/material";
+import {NotificationsActive} from "@mui/icons-material";
 
 
 const DashboardZelator = () => {
@@ -19,8 +30,34 @@ const DashboardZelator = () => {
     const [mystery, setMystery] = useState(null);
     const [groupMembers, setGroupMembers] = useState([]);
     const [nextEvent, setNextEvent] = useState(null);
+    const [notifications, setNotifications] = useState([]);
+    const [hasUnreadNotifications, setHasUnreadNotifications] = useState(false);
+    const [openDialog, setOpenDialog] = useState(false);
 
     const navigate = useNavigate();
+
+
+    useEffect(() => {
+        const fetchNoti = async () => {
+            try {
+                const response = await axios.get('http://localhost:9002/chat/notifications',
+                    {withCredentials: true});
+
+                setNotifications(response.data);
+
+                const unread = response.data.some(notification => !notification.isRead);
+                setHasUnreadNotifications(unread);
+            } catch (error) {
+                console.error("Blad wczytywania notyfikacji");
+            }
+        };
+
+        fetchNoti();
+
+        const intervalId = setInterval(fetchNoti, 5000);
+
+        return () => clearInterval(intervalId);
+    }, []);
 
 
     useEffect(() => {
@@ -175,18 +212,30 @@ const DashboardZelator = () => {
 
 
     const sendReminder = async (memberId) => {
-        alert("TODO");
-        // try {
-        //     await axios.post("http://localhost:9002/reminder",
-        //         {memberId},
-        //         {withCredentials: true});
-        //
-        //     alert("Przypomnienie wysłane!");
-        // } catch(error) {
-        //     console.error("Bład wysyłania przypomnienia:", error);
-        //     alert("Nie udało się wysłać przypomnienia.");
-        // }
+        try {
+            await axios.post(`http://localhost:9002/chat/notifications/reminder/${memberId}`,
+                {},
+                {withCredentials: true});
+
+            alert("Przypomnienie wysłane!");
+        } catch(error) {
+            console.error("Bład wysyłania przypomnienia:", error);
+            alert("Nie udało się wysłać przypomnienia.");
+        }
     }
+
+    const handleNotificationClick = async () => {
+        try {
+            await axios.post('http://localhost:9002/chat/read-notifications', {}, {
+                withCredentials: true,
+            });
+
+            setHasUnreadNotifications(false);
+            setOpenDialog(true);
+        } catch (error) {
+            console.error("Błąd podczas oznaczania powiadomień jako przeczytane");
+        }
+    };
 
 
     return (
@@ -255,6 +304,27 @@ const DashboardZelator = () => {
                 <Typography variant="h4" gutterBottom>
                     Pulpit Zelatora
                 </Typography>
+
+                <Badge
+                    color="error"
+                    variant="dot"
+                    invisible={!hasUnreadNotifications} // Kropka jest widoczna tylko, jeśli są nieprzeczytane powiadomienia
+                    sx={{ cursor: 'pointer' }}
+                    onClick={handleNotificationClick}
+                >
+                    <NotificationsActive sx={{ fontSize: 40 }} />
+                </Badge>
+
+                <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+                    <DialogTitle>Powiadomienia</DialogTitle>
+                    <DialogContent>
+                        {notifications.map((notification, index) => (
+                            <Typography key={index}>
+                                {notification.message}
+                            </Typography>
+                        ))}
+                    </DialogContent>
+                </Dialog>
 
                 <Paper sx={{ padding: 3, borderRadius: '8px', boxShadow: 3, marginBottom: 3 }}>
                     <Typography variant="h6"><strong>Obecna data i godzina:</strong> {formatDateTime(currentTime)}</Typography>

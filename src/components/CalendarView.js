@@ -15,7 +15,7 @@ import {
     Button, DialogActions, TextField, DialogContent, DialogTitle, Dialog,
 } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { useNavigate } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 const localizer = momentLocalizer(moment);
 
@@ -151,6 +151,15 @@ const CalendarView = () => {
         }
     };
 
+
+    useEffect(() => {
+        document.body.style.margin = "0";
+        document.body.style.padding = "0";
+        document.documentElement.style.margin = "0";
+        document.documentElement.style.padding = "0";
+    }, []);
+
+
     if (loading)
         return (
             <Box sx={{ textAlign: "center", marginTop: 4 }}>
@@ -167,7 +176,7 @@ const CalendarView = () => {
         );
 
     return (
-        <div style={{ minHeight: "100vh", backgroundColor: "#f0f4c3", margin: 0 }}>
+        <div style={{ minHeight: "100vh", backgroundColor: "#f0f4c3", margin: 0, display: "flex", flexDirection: "column" }}>
             <AppBar position="static" sx={{ marginBottom: 4, backgroundColor: "#ff5252" }}>
                 <Toolbar
                     sx={{
@@ -197,12 +206,31 @@ const CalendarView = () => {
                     >
                         Zelator
                     </Typography>
-                    <Box>
+
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        {/*{user?.role === "Zelator" && (*/}
+                        <Button
+                            color="inherit"
+                            component={Link}
+                            to="/zelator"
+                            sx={{ mr: 2 }} // Opcjonalnie możesz dodać margines
+                        >
+                            Pulpit Zelatora
+                        </Button>
+                        {/*// )}*/}
+
                         <Button color="inherit" onClick={handleLogout}>
                             Wyloguj się
-                            <LogoutIcon sx={{ fontSize: 40, marginLeft: 1 }}></LogoutIcon>
+                            <LogoutIcon sx={{ fontSize: 40, marginLeft: 1 }} />
                         </Button>
                     </Box>
+
+                    {/*<Box>*/}
+                    {/*    <Button color="inherit" onClick={handleLogout}>*/}
+                    {/*        Wyloguj się*/}
+                    {/*        <LogoutIcon sx={{ fontSize: 40, marginLeft: 1 }}></LogoutIcon>*/}
+                    {/*    </Button>*/}
+                    {/*</Box>*/}
                 </Toolbar>
             </AppBar>
 
@@ -244,13 +272,14 @@ const CalendarView = () => {
                     color: "#fff",
                     textAlign: "center",
                     padding: "10px 0",
-                    position: "absolute",
-                    bottom: 0,
+                    // position: "absolute",
+                    // bottom: 0,
                     width: "100%",
+                    marginTop: 'auto',
                 }}
             >
                 <Typography variant="body2">
-                    &copy; 2025 Zelator. Wszystkie prawa zastrzeżone.
+                    &copy; 2025 Zelator. Autor: Jakub Rymarz.
                 </Typography>
             </footer>
 

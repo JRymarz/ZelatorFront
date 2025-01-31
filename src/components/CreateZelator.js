@@ -1,6 +1,6 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {AppBar, Toolbar, Typography, Button, Box, TextField, CircularProgress} from "@mui/material";
 import {useUser} from "../context/UserContext";
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -56,9 +56,16 @@ function CreateZelator() {
         }
     };
 
+    useEffect(() => {
+        document.body.style.margin = "0";
+        document.body.style.padding = "0";
+        document.documentElement.style.margin = "0";
+        document.documentElement.style.padding = "0";
+    }, []);
+
 
     return(
-        <div style={{minHeight: '100vh', backgroundColor: '#f0f4c3', margin: 0, padding: 0}}>
+        <div style={{minHeight: '100vh', backgroundColor: '#f0f4c3', margin: 0, padding: 0, display: "flex", flexDirection: "column"}}>
             <AppBar position="static" sx={{marginBottom: 4, backgroundColor: '#ff5252'}}>
                 <Toolbar sx={{
                     maxWidth: '1500px',
@@ -91,12 +98,30 @@ function CreateZelator() {
                         Zelator
                     </Typography>
 
-                    <Box>
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        {/*{user?.role === "Zelator" && (*/}
+                        <Button
+                            color="inherit"
+                            component={Link}
+                            to="/zelator"
+                            sx={{ mr: 2 }} // Opcjonalnie możesz dodać margines
+                        >
+                            Pulpit Zelatora
+                        </Button>
+                        {/*// )}*/}
+
                         <Button color="inherit" onClick={handleLogout}>
                             Wyloguj się
-                            <LogoutIcon sx={{fontSize: 40, marginLeft: 1}}></LogoutIcon>
+                            <LogoutIcon sx={{ fontSize: 40, marginLeft: 1 }} />
                         </Button>
                     </Box>
+
+                    {/*<Box>*/}
+                    {/*    <Button color="inherit" onClick={handleLogout}>*/}
+                    {/*        Wyloguj się*/}
+                    {/*        <LogoutIcon sx={{fontSize: 40, marginLeft: 1}}></LogoutIcon>*/}
+                    {/*    </Button>*/}
+                    {/*</Box>*/}
                 </Toolbar>
             </AppBar>
 
@@ -192,13 +217,11 @@ function CreateZelator() {
                 color: '#fff',
                 textAlign: 'center',
                 padding: '10px 0',
-                position: 'absolute',
-                bottom: 0,
                 width: '100%',
                 marginTop: 'auto',
             }}>
                 <Typography variant="body2">
-                    &copy; 2024 Zelator. Wszystkie prawa zastrzeżone.
+                    &copy; 2025 Zelator. Autor: Jakub Rymarz.
                 </Typography>
             </footer>
         </div>

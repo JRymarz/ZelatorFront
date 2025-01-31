@@ -95,7 +95,7 @@ function HomePage() {
                     </Typography>
 
                     <Box>
-                        {user?.role === "Zelator" && (
+                        {(user?.role === "Zelator" || user?.role === 'MainZelator') && (
                         <Button
                             color="inherit"
                             component={Link}
@@ -217,8 +217,6 @@ function HomePage() {
                 color: '#fff',
                 textAlign: 'center',
                 padding: '10px 0',
-                position: 'absolute',
-                bottom: 0,
                 width: '100%',
                 marginTop: 'auto',
             }}>

@@ -13,7 +13,7 @@ function ProtectedRoutesForZelator({children}) {
             if(!user) {
                 console.log("Brak usera.");
                 navigate("/login");
-            } else if (user.role !== "Zelator") {
+            } else if ((user.role !== "Zelator") && (user.role !== "MainZelator")) {
                 console.log("Zła rola.");
                 navigate("/notAuthorized");
             }
@@ -22,7 +22,7 @@ function ProtectedRoutesForZelator({children}) {
 
     if(loading) return <div>Ładowanie...</div>;
 
-    return user && user.role === "Zelator" ? children : null;
+    return user && (user.role === "Zelator" || user.role === "MainZelator") ? children : null;
 
 }
 

@@ -164,8 +164,6 @@ export default function LoginForm() {
                 color: '#fff',
                 textAlign: 'center',
                 padding: '10px 0',
-                position: 'absolute',
-                bottom: 0,
                 width: '100%',
                 marginTop: 'auto',
             }}>

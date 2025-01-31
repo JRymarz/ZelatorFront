@@ -130,7 +130,7 @@ function MyRose() {
     if(error) return <p>{error}</p>;
 
     return (
-        <div style={{minHeight: '100vh', backgroundColor: '#f0f4c3', margin: 0, padding: 0}}>
+        <div style={{minHeight: '100vh', backgroundColor: '#f0f4c3', margin: 0, padding: 0, display: "flex", flexDirection: "column"}}>
             <AppBar position="static" sx={{marginBottom: 4, backgroundColor: '#ff5252'}}>
                 <Toolbar sx={{
                     maxWidth: '1500px',
@@ -198,6 +198,17 @@ function MyRose() {
                 <h2>{roseDetails.name}</h2>
                 <p><strong>Obecna intencja:</strong> {roseDetails.intention.title}</p>
                 <p>{roseDetails.intention.description}</p>
+
+                <Button
+                    variant="contained"
+                    color="error"
+                    onClick={() => {
+                        navigate('/mystery-change')
+                    }}
+                    sx={{marginRight: '3px'}}
+                >
+                    Zaplanuj zmianę tajemnic
+                </Button>
 
                 <h3>Członkowie róży:</h3>
 
@@ -302,13 +313,11 @@ function MyRose() {
                 color: '#fff',
                 textAlign: 'center',
                 padding: '10px 0',
-                position: 'absolute',
-                bottom: 0,
                 width: '100%',
                 marginTop: 'auto',
             }}>
                 <Typography variant="body2">
-                    &copy; 2025 Zelator. Wszystkie prawa zastrzeżone.
+                    &copy; 2025 Zelator. Autor: Jakub Rymarz.
                 </Typography>
             </footer>
         </div>

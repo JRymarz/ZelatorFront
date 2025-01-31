@@ -257,7 +257,7 @@ const ChatList = () => {
                 }}
             >
                 <Typography variant="body2">
-                    &copy; 2025 Zelator. Wszystkie prawa zastrzeżone.
+                    &copy; 2025 Zelator. Autor: Jakub Rymarz.
                 </Typography>
             </footer>
         </div>
