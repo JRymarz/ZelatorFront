@@ -17,6 +17,31 @@ function CreateZelator() {
         lastName: "",
     });
 
+    const [errors, setErrors] = useState({
+        firstName: '',
+        lastName: '',
+    });
+
+    const validateForm = () => {
+        const newErrors = {};
+
+        if(!formData.firstName) {
+            newErrors.firstName = 'Imię jest wymagane';
+        } else if(!/^[a-zA-ZąćęłńóśżźĄĆĘŁŃÓŚŻŹ]+$/.test(formData.firstName)) {
+            newErrors.firstName = "Imię może zawierać tylko litery";
+        }
+
+        if (!formData.lastName) {
+            newErrors.lastName = "Nazwisko jest wymagane";
+        } else if (!/^[a-zA-ZąćęłńóśżźĄĆĘŁŃÓŚŻŹ]+$/.test(formData.lastName)) {
+            newErrors.lastName = "Nazwisko może zawierać tylko litery";
+        }
+
+        setErrors(newErrors);
+
+        return Object.keys(newErrors).length === 0;
+    };
+
     const handleChange = (e) => {
         setFormData({
             ...formData,
@@ -26,16 +51,19 @@ function CreateZelator() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        try {
-            const response = await axios.post(
-                "http://localhost:9002/create-zelator",
-                formData,
-                {withCredentials: true}
-            );
-            alert(response.data);
-        } catch (error) {
-            console.error("Bład podczas tworzenia konta:", error);
-            alert("Nie udało się utworzyć konta.");
+
+        if(validateForm()) {
+            try {
+                const response = await axios.post(
+                    "http://localhost:9002/create-zelator",
+                    formData,
+                    {withCredentials: true}
+                );
+                alert(response.data);
+            } catch (error) {
+                console.error("Bład podczas tworzenia konta:", error);
+                alert("Nie udało się utworzyć konta.");
+            }
         }
     };
 
@@ -139,11 +167,6 @@ function CreateZelator() {
                 <h2>Utwórz nowe konto dla Zelatora</h2>
 
                 <form onSubmit={handleSubmit}>
-                    {/*<label>*/}
-                    {/*    Imię:*/}
-                    {/*    <input type="text" name="firstName" value={formData.firstName} onChange={handleChange}*/}
-                    {/*           required/>*/}
-                    {/*</label>*/}
                     <TextField
                         label="Imię"
                         variant="outlined"
@@ -153,11 +176,9 @@ function CreateZelator() {
                         required
                         fullWidth
                         sx={{marginBottom: 2}}
+                        error={!!errors.firstName}
+                        helperText={errors.firstName}
                     />
-                    {/*<label>*/}
-                    {/*    Nazwisko:*/}
-                    {/*    <input type="text" name="lastName" value={formData.lastName} onChange={handleChange} required/>*/}
-                    {/*</label>*/}
                     <TextField
                         label="Nazwisko"
                         variant="outlined"
@@ -167,11 +188,9 @@ function CreateZelator() {
                         required
                         fullWidth
                         sx={{marginBottom: 2}}
+                        error={!!errors.lastName}
+                        helperText={errors.lastName}
                     />
-                    {/*<label>*/}
-                    {/*    Email:*/}
-                    {/*    <input type="email" name="email" value={formData.email} onChange={handleChange} required/>*/}
-                    {/*</label>*/}
                     <TextField
                         label="Email"
                         variant="outlined"
@@ -183,11 +202,6 @@ function CreateZelator() {
                         fullWidth
                         sx={{marginBottom: 2}}
                     />
-                    {/*<label>*/}
-                    {/*    Hasło:*/}
-                    {/*    <input type="password" name="password" value={formData.password} onChange={handleChange}*/}
-                    {/*           required/>*/}
-                    {/*</label>*/}
                     <TextField
                         label="Hasło"
                         variant="outlined"
@@ -200,7 +214,6 @@ function CreateZelator() {
                         sx={{marginBottom: 2}}
                     />
 
-                    {/*<button type="submit">Utwórz nowe konto</button>*/}
                     <Button
                         type="submit"
                         variant="contained"
