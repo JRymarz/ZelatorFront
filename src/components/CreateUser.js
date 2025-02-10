@@ -27,12 +27,16 @@ function CreateUser() {
             newErrors.firstName = 'Imię jest wymagane';
         } else if(!/^[a-zA-ZąćęłńóśżźĄĆĘŁŃÓŚŻŹ]+$/.test(formData.firstName)) {
             newErrors.firstName = "Imię może zawierać tylko litery";
+        } else {
+            formData.firstName = formData.firstName.charAt(0).toUpperCase() + formData.firstName.slice(1).toLowerCase();
         }
 
         if (!formData.lastName) {
             newErrors.lastName = "Nazwisko jest wymagane";
         } else if (!/^[a-zA-ZąćęłńóśżźĄĆĘŁŃÓŚŻŹ]+$/.test(formData.lastName)) {
             newErrors.lastName = "Nazwisko może zawierać tylko litery";
+        } else {
+            formData.lastName = formData.lastName.charAt(0).toUpperCase() + formData.lastName.slice(1).toLowerCase();
         }
 
         setErrors(newErrors);
