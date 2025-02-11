@@ -222,38 +222,28 @@ function Members() {
                         onChange={handleFilterChange}
                         sx={{marginBottom: 2}}
                     />
-                    <Box sx={{marginBottom: 2}}>
-                        {/*<label>Ma grupę?</label>*/}
-                        {/*<select*/}
-                        {/*    name="hasGroup"*/}
-                        {/*    value={filters.hasGroup}*/}
-                        {/*    onChange={handleFilterChange}*/}
-                        {/*>*/}
-                        {/*    <option value="">Wszyscy</option>*/}
-                        {/*    <option value="true">Tak</option>*/}
-                        {/*    <option value="false">Nie</option>*/}
-                        {/*</select>*/}
-                        <FormControlLabel
-                            control={
-                                <Switch
-                                    checked={filters.hasGroup === "true"}
-                                    onChange={(e) => handleFilterChange({
-                                        target: {
-                                            name: "hasGroup",
-                                            value: e.target.checked ? "true" : "false"
-                                        }
-                                    })}
-                                    name="hasGroup"
-                                    color="error"
-                                />
-                            }
-                            label="Czy należy do róży?"
-                            sx={{marginBottom: 2}}
-                        />
-                    </Box>
-                    <Button variant="contained" color="error" onClick={() => fetchMembers(1)}>
-                        Filtruj
-                    </Button>
+                    {/*<Box sx={{marginBottom: 2}}>*/}
+                    {/*    <FormControlLabel*/}
+                    {/*        control={*/}
+                    {/*            <Switch*/}
+                    {/*                checked={filters.hasGroup === "true"}*/}
+                    {/*                onChange={(e) => handleFilterChange({*/}
+                    {/*                    target: {*/}
+                    {/*                        name: "hasGroup",*/}
+                    {/*                        value: e.target.checked ? "true" : "false"*/}
+                    {/*                    }*/}
+                    {/*                })}*/}
+                    {/*                name="hasGroup"*/}
+                    {/*                color="error"*/}
+                    {/*            />*/}
+                    {/*        }*/}
+                    {/*        label="Czy należy do róży?"*/}
+                    {/*        sx={{marginBottom: 2}}*/}
+                    {/*    />*/}
+                    {/*</Box>*/}
+                    {/*<Button variant="contained" color="error" onClick={() => fetchMembers(1)}>*/}
+                    {/*    Filtruj*/}
+                    {/*</Button>*/}
                 </Box>
 
                 {loading ? (
@@ -262,34 +252,6 @@ function Members() {
                     <p>{error}</p>
                 ) : (
                     <>
-                        {/*<table style={{ width: '100%', marginTop: 4 }}>*/}
-                        {/*    <thead>*/}
-                        {/*    <tr>*/}
-                        {/*        <th>Imię</th>*/}
-                        {/*        <th>Nazwisko</th>*/}
-                        {/*        <th>Email</th>*/}
-                        {/*        <th>Róża</th>*/}
-                        {/*        <th>Akcja</th>*/}
-                        {/*    </tr>*/}
-                        {/*    </thead>*/}
-                        {/*    <tbody>*/}
-                        {/*    {members.map((member) => (*/}
-                        {/*        <tr key={member.id}>*/}
-                        {/*            <td>{member.firstName}</td>*/}
-                        {/*            <td>{member.lastName}</td>*/}
-                        {/*            <td>{member.email}</td>*/}
-                        {/*            <td>{member.group ? member.group.name : "Brak przypisania do róży"}</td>*/}
-                        {/*            <td>*/}
-                        {/*                {!member.group ? (*/}
-                        {/*                    <Button variant="contained" color="error" onClick={() => assignToGroup(member.id)}>*/}
-                        {/*                        Przypisz do mojej róży*/}
-                        {/*                    </Button>*/}
-                        {/*                ) : null}*/}
-                        {/*            </td>*/}
-                        {/*        </tr>*/}
-                        {/*    ))}*/}
-                        {/*    </tbody>*/}
-                        {/*</table>*/}
                         <TableContainer component={Paper} sx={{width: '100%', marginTop: 4}}>
                             <Table>
                                 <TableHead>

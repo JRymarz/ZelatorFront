@@ -18,6 +18,8 @@ import Masses from "./components/Masses";
 import CalendarView from "./components/CalendarView";
 import ChatList from "./components/ChatList";
 import ChatView from "./components/ChatView";
+import GroupList from "./components/GroupList";
+import GroupDetails from "./components/GroupDetails";
 
 
 function App() {
@@ -29,28 +31,28 @@ function App() {
                   <Route path="/login" element={<LoginForm />} />
                   <Route path="/loginSuccess" element={<LoginSuccess />} />
                   <Route path="/notAuthorized" element={<NotAuthorized />} />
-                  <Route
-                      path="/create-zelator"
-                      element={
-                          <ProtectedRoutes>
-                              <CreateZelator />
-                          </ProtectedRoutes>
-                      }
-                  />
+                  {/*<Route*/}
+                  {/*    path="/create-zelator"*/}
+                  {/*    element={*/}
+                  {/*        <ProtectedRoutes>*/}
+                  {/*            <CreateZelator />*/}
+                  {/*        </ProtectedRoutes>*/}
+                  {/*    }*/}
+                  {/*/>*/}
                   <Route
                     path="/create-user"
                     element={
-                      <ProtectedRoutesForZelator>
+                      <ProtectedRoutes>
                           <CreateUser />
-                      </ProtectedRoutesForZelator>
+                      </ProtectedRoutes>
                     }
                   />
                   <Route
                       path="/create-group"
                       element={
-                          <ProtectedRoutesForZelator>
+                          <ProtectedRoutes>
                               <CreateGroup />
-                          </ProtectedRoutesForZelator>
+                          </ProtectedRoutes>
                       }
                   />
                   <Route
@@ -115,6 +117,22 @@ function App() {
                           <ProtectedRoutesForZelator>
                               <ChatView />
                           </ProtectedRoutesForZelator>
+                      }
+                  />
+                  <Route
+                      path="/groups"
+                      element={
+                          <ProtectedRoutes>
+                              <GroupList />
+                          </ProtectedRoutes>
+                      }
+                  />
+                  <Route
+                      path="/group/:groupId"
+                      element={
+                          <ProtectedRoutes>
+                              <GroupDetails />
+                          </ProtectedRoutes>
                       }
                   />
               </Routes>

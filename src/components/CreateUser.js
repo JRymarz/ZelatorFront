@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {Link, useNavigate} from "react-router-dom";
-import {AppBar, Toolbar, Typography, Button, Box, TextField, CircularProgress} from "@mui/material";
+import {AppBar, Toolbar, Typography, Button, Box, TextField, CircularProgress, MenuItem} from "@mui/material";
 import {useUser} from "../context/UserContext";
 import LogoutIcon from '@mui/icons-material/Logout';
 
@@ -13,12 +13,23 @@ function CreateUser() {
         password: "",
         firstName: "",
         lastName: "",
+        groupId: "",
     });
+
+    const [groups, setGroups] = useState([]);
 
     const [errors, setErrors] = useState({
         firstName: '',
         lastName: '',
     });
+
+
+    useEffect(() => {
+        axios.get("http://localhost:9002/groups", {withCredentials: true})
+            .then(response => setGroups(response.data))
+            .catch(error => console.log("Błąd podczas pobierania grup:", error));
+    }, []);
+
 
     const validateForm = () => {
         const newErrors = {};
@@ -62,6 +73,9 @@ function CreateUser() {
                 );
                 alert(response.data);
             } catch (error) {
+                if(error.response && error.response.status === 400) {
+                    alert(error.response.data);
+                }
                 console.error("Bład podczas tworzenia konta użytkownika:", error);
                 alert("Nie udało się utworzyć konta użytkownika.");
             }
@@ -211,6 +225,24 @@ function CreateUser() {
                         fullWidth
                         sx={{marginBottom: 2}}
                     />
+
+                    <TextField
+                        select
+                        label="Wybierz grupę"
+                        name="groupId"
+                        value={formData.groupId}
+                        onChange={handleChange}
+                        required
+                        fullWidth
+                        sx={{marginBottom: 2}}
+                    >
+                        {groups.map(group => (
+                            <MenuItem key={group.groupId}
+                            value={group.groupId}>
+                                {group.name}
+                            </MenuItem>
+                        ))}
+                    </TextField>
 
                     <Button
                         type="submit"

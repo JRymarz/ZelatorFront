@@ -242,7 +242,7 @@ function MyRose() {
                                                 Przypisz tajemnicę
                                             </Button>
                                         )}
-                                        {user && user.id !== member.id && (
+                                        {/*{user && user.id !== member.id && (
                                             <Button
                                                 variant="contained"
                                                 color="error"
@@ -250,7 +250,7 @@ function MyRose() {
                                             >
                                                 Usuń z Róży
                                             </Button>
-                                        )}
+                                        )}*/}
                                     </TableCell>
                                 </TableRow>
                             ))}

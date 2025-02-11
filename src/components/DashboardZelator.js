@@ -391,8 +391,11 @@ const DashboardZelator = () => {
                     </Box>
                 )}
 
+
                 <Grid container spacing={3}>
                     {/* Sekcja z linkami do innych stron */}
+
+                    {user.user.role === 'MainZelator' && (
                     <Grid item xs={12} md={6}>
                         <Paper sx={{ padding: 3, borderRadius: '8px', boxShadow: 3 }}>
                             <Typography variant="h6" gutterBottom>
@@ -418,8 +421,9 @@ const DashboardZelator = () => {
                             </Button>
                         </Paper>
                     </Grid>
+                    )}
 
-                    {!user.user.group && (
+                    {user.user.role === 'MainZelator' && (
                     <Grid item xs={12} md={6}>
                         <Paper sx={{ padding: 3, borderRadius: '8px', boxShadow: 3 }}>
                             <Typography variant="h6" gutterBottom>
@@ -565,33 +569,33 @@ const DashboardZelator = () => {
                         </Grid>
                     )}
 
-                    {user.user.role === 'MainZelator' && (
-                        <Grid item xs={12} md={6}>
-                            <Paper sx={{ padding: 3, borderRadius: '8px', boxShadow: 3 }}>
-                                <Typography variant="h6" gutterBottom>
-                                    Zarządzanie Zelatorami
-                                </Typography>
-                                <Button
-                                    variant="contained"
-                                    color="error"
-                                    fullWidth
-                                    component={Link}
-                                    to="/create-zelator"
-                                    sx={{
-                                        borderRadius: '5px',
-                                        padding: '10px',
-                                        fontSize: '16px',
-                                        backgroundColor: '#ff5252',
-                                        '&:hover': {
-                                            backgroundColor: '#e03e3e'
-                                        }
-                                    }}
-                                >
-                                    Dodaj Zelatora
-                                </Button>
-                            </Paper>
-                        </Grid>
-                    )}
+                    {/*{user.user.role === 'MainZelator' && (*/}
+                    {/*    <Grid item xs={12} md={6}>*/}
+                    {/*        <Paper sx={{ padding: 3, borderRadius: '8px', boxShadow: 3 }}>*/}
+                    {/*            <Typography variant="h6" gutterBottom>*/}
+                    {/*                Zarządzanie Zelatorami*/}
+                    {/*            </Typography>*/}
+                    {/*            <Button*/}
+                    {/*                variant="contained"*/}
+                    {/*                color="error"*/}
+                    {/*                fullWidth*/}
+                    {/*                component={Link}*/}
+                    {/*                to="/create-zelator"*/}
+                    {/*                sx={{*/}
+                    {/*                    borderRadius: '5px',*/}
+                    {/*                    padding: '10px',*/}
+                    {/*                    fontSize: '16px',*/}
+                    {/*                    backgroundColor: '#ff5252',*/}
+                    {/*                    '&:hover': {*/}
+                    {/*                        backgroundColor: '#e03e3e'*/}
+                    {/*                    }*/}
+                    {/*                }}*/}
+                    {/*            >*/}
+                    {/*                Dodaj Zelatora*/}
+                    {/*            </Button>*/}
+                    {/*        </Paper>*/}
+                    {/*    </Grid>*/}
+                    {/*)}*/}
 
                     {user.user.group && (
                         <Grid item xs={12} md={6}>
@@ -629,6 +633,34 @@ const DashboardZelator = () => {
                         </Grid>
                     )}
 
+
+                    {user.user.role === 'MainZelator' && (
+                        <Grid item xs={12} md={6}>
+                            <Paper sx={{ padding: 3, borderRadius: '8px', boxShadow: 3 }}>
+                                <Typography variant="h6" gutterBottom>
+                                    Lista Róż
+                                </Typography>
+                                <Button
+                                    variant="contained"
+                                    color="error"
+                                    fullWidth
+                                    component={Link} // Link do /create-group
+                                    to="/groups"
+                                    sx={{
+                                        borderRadius: '5px',
+                                        padding: '10px',
+                                        fontSize: '16px',
+                                        backgroundColor: '#ff5252',
+                                        '&:hover': {
+                                            backgroundColor: '#e03e3e'
+                                        }
+                                    }}
+                                >
+                                    Przeglądaj grupy
+                                </Button>
+                            </Paper>
+                        </Grid>
+                    )}
 
                 </Grid>
             </Box>
